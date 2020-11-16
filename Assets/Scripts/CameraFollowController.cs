@@ -8,9 +8,7 @@ public class CameraFollowController : MonoBehaviour
     public Transform player;
 
     // 2D box collider, this will be the bounds for the camera
-    public BoxCollider2D cameraBoundary;
-
-    private Camera camera;
+    //public BoxCollider2D cameraBoundary;
 
     // If the player remains within a 1x1 square, the camera won't bother moving.
     // This prevents micromovements.
@@ -24,10 +22,8 @@ public class CameraFollowController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        minmum = cameraBoundary.bounds.min;
-        maximum = cameraBoundary.bounds.max;
-
-        camera = GetComponent<Camera>();
+        //minmum = cameraBoundary.bounds.min;
+        //maximum = cameraBoundary.bounds.max;
     }
 
     // Update is called once per frame
