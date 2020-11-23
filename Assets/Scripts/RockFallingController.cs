@@ -31,9 +31,15 @@ public class RockFallingController : MonoBehaviour
         {
             // TODO: Update this
             rb2D.bodyType = RigidbodyType2D.Dynamic;
+        }
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
             player.SetHealth(-100);
         }
-
-        Debug.DrawRay(transform.position, -Vector2.up, Color.red);
     }
 }

@@ -9,10 +9,12 @@ public class PlayerCharacterController : MonoBehaviour
     private Animator                animator;
     private Rigidbody2D             rb2d;
     private CircleCollider2D        cc;
+    private PolygonCollider2D       pc2d;
 
     private const string KEY_JUMP = "space";
 
     private TimeController          timeController;
+    private MenuController          menuController;
 
     // Do not use numbers when referring to the maximum or minimum health values, instead
     // prefer these constants.
@@ -29,7 +31,6 @@ public class PlayerCharacterController : MonoBehaviour
 
     private bool                    isFacingRight = false;
     private bool                    isGrounded = true;
-    private bool                    isDead = false;
 
 
     // Start is called before the first frame update
@@ -38,7 +39,10 @@ public class PlayerCharacterController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         cc = GetComponent<CircleCollider2D>();
-        timeController = FindObjectOfType(typeof(TimeController)) as TimeController;
+        pc2d = GetComponent<PolygonCollider2D>();
+        timeController = GetComponent<TimeController>();
+
+        menuController = FindObjectOfType(typeof(MenuController)) as MenuController;
     }
 
 
@@ -71,13 +75,13 @@ public class PlayerCharacterController : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        if (!isGrounded && cc.IsTouchingLayers(GroundLayer))
+        if (!isGrounded && pc2d.IsTouchingLayers(GroundLayer))
         {
             isGrounded = true;
             animator.SetBool("Grounded", isGrounded);
         }
 
-        if (isGrounded && !cc.IsTouchingLayers(GroundLayer))
+        if (isGrounded && !pc2d.IsTouchingLayers(GroundLayer))
         {
             isGrounded = false;
             animator.SetBool("Grounded", isGrounded);
@@ -87,9 +91,9 @@ public class PlayerCharacterController : MonoBehaviour
 
         // Flip the character to face the right direction
         if (move > 0)
-            transform.localScale = new Vector3(-2.0f, 2.0f, 2.0f);
+            transform.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
         else if (move < 0)
-            transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
 
         // Character core movement
@@ -136,7 +140,7 @@ public class PlayerCharacterController : MonoBehaviour
         {
             //Debug.Log("You are dead. Not big surprise.");
             animator.SetTrigger("Death");
-            isDead = true;
+            menuController.ShowGameOverMenu();
         }
     }
 

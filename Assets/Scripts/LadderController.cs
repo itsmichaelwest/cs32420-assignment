@@ -19,7 +19,6 @@ public class LadderController : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            Debug.Log("collide");
             collider.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             FloatingPlatforms.gameObject.GetComponent<TilemapCollider2D>().enabled = false;
         }
@@ -31,10 +30,8 @@ public class LadderController : MonoBehaviour
     {
         if (!(collider.tag == "Player")) { return; }
 
-        Debug.Log("colliding");
-
         float move = Input.GetAxis("Vertical");
-        collider.attachedRigidbody.velocity = new Vector2(move * MoveForce, collider.attachedRigidbody.velocity.y);
+        collider.attachedRigidbody.velocity = new Vector2(collider.attachedRigidbody.velocity.x, move * MoveForce);
         
         //Vector3 currentVelocity = Vector3.zero;
         //Vector3 targetVelocity = new Vector2(collider.attachedRigidbody.velocity.y, move * MoveForce);
@@ -54,7 +51,6 @@ public class LadderController : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            Debug.Log("no collide");
             collider.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
             FloatingPlatforms.gameObject.GetComponent<TilemapCollider2D>().enabled = true;
         }

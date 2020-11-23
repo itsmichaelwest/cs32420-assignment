@@ -42,7 +42,28 @@ public class TimeController : MonoBehaviour
         }
         else
         {
-            thing.position = (Vector3)positions.Last();
+            thing.position = positions.Last();
+            positions.RemoveLast();
+        }
+    }
+
+
+    /// <summary>
+    /// Rewind the level a specified number of seconds.
+    /// </summary>
+    /// <param name="seconds">The number of seconds to rewind. This
+    /// cannot be higher than the maximum number of rewind seconds allowed.</param>
+    public void Rewind(int seconds)
+    {
+        int secsToRewind;
+        if (seconds <= MAXIMUM_REVERSE_SECS)
+            secsToRewind = seconds;
+        else
+            secsToRewind = MAXIMUM_REVERSE_SECS;
+
+        for (int i = 0; i >= MAXIMUM_REVERSE_SECS; i++)
+        {
+            thing.position = positions.Last();
             positions.RemoveLast();
         }
     }

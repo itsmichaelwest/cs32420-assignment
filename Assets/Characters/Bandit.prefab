@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 61346583712760016}
   - component: {fileID: 2459577698365605300}
   - component: {fileID: 8079947187316308707}
+  - component: {fileID: 6618793142483428166}
+  - component: {fileID: 3576147152954589176}
   m_Layer: 0
   m_Name: Bandit
   m_TagString: Player
@@ -153,7 +155,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463392086428580}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -198,7 +200,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463392086428580}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -207,3 +209,53 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.75}
   serializedVersion: 2
   m_Radius: 0.75
+--- !u!60 &6618793142483428166
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463392086428580}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1.5, y: 1.5}
+    newSize: {x: 1.28, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.37623286, y: 0.8524485}
+      - {x: 0.25937924, y: 0.9979399}
+      - {x: 0.06042956, y: 1.2795166}
+      - {x: -0.14305675, y: 1.2762183}
+      - {x: -0.1755347, y: 1.0314184}
+      - {x: -0.2826464, y: 0.7550317}
+      - {x: -0.31007466, y: 0.06492525}
+      - {x: 0.2947932, y: 0.06492525}
+      - {x: 0.375, y: 0.0625}
+      - {x: 0.31470874, y: 0.4081989}
+      - {x: 0.40313804, y: 0.56735045}
+      - {x: 0.53889084, y: 0.7350836}
+--- !u!114 &3576147152954589176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463392086428580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf83661a80e249f48ffd8373f7b3df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reversing: 0
