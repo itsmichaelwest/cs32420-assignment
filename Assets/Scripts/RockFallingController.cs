@@ -5,12 +5,15 @@ using UnityEngine;
 public class RockFallingController : MonoBehaviour
 {
     Rigidbody2D rb2D;
+    PlayerCharacterController player;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
         rb2D.bodyType = RigidbodyType2D.Static;
+
+        player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
     }
 
     /// <summary>
@@ -28,6 +31,7 @@ public class RockFallingController : MonoBehaviour
         {
             // TODO: Update this
             rb2D.bodyType = RigidbodyType2D.Dynamic;
+            player.SetHealth(-100);
         }
 
         Debug.DrawRay(transform.position, -Vector2.up, Color.red);

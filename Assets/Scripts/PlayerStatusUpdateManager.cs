@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStatsUpdateManager : MonoBehaviour
+public class PlayerStatusUpdateManager : MonoBehaviour
 {
 
-    public PlayerCharacterController player;
+    PlayerCharacterController player;
 
     private Text healthMeter;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
         healthMeter = GetComponent<Text>();
     }
 

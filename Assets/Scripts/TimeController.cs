@@ -6,6 +6,7 @@ public class TimeController : MonoBehaviour
 {
 
     public GameObject player;
+
     public ArrayList playerPositions;
     public bool reversing = false;
 

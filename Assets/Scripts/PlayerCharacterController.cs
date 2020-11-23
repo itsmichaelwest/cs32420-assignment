@@ -6,70 +6,47 @@ using UnityEngine.Tilemaps;
 
 public class PlayerCharacterController : MonoBehaviour
 {
-    private Animator animator;
-    private Rigidbody2D rb;
-    public CircleCollider2D cc;
-    public bool facingRight = false;
+    private Animator                animator;
+    private Rigidbody2D             rb2d;
+    private CircleCollider2D        cc;
 
-    // Define any keys we will use, 
     private const string KEY_JUMP = "space";
 
-    private TimeController timeController;
+    private TimeController          timeController;
 
-    // Health
     // Do not use numbers when referring to the maximum or minimum health values, instead
     // prefer these constants.
     // Health will always start at maximum. Use SetHealth() to adjust based on an integer
     // value.
-    private const int MAX_HEALTH = 100;
-    private const int MIN_HEALTH = 0;
-    public int health = MAX_HEALTH;
+    private const int               MAX_HEALTH = 100;
+    private const int               MIN_HEALTH = 0;
+    public int                      health = MAX_HEALTH;
 
-    [Range(0, .3f)] public float MovementSmoothing = .05f;
-    public float JumpForce = 500f;
-    public float MoveForce = 25f;
-    public LayerMask GroundLayer;
+    [Range(0, .3f)] public float    MovementSmoothing = .05f;
+    public float                    JumpForce = 10f;
+    public float                    MoveForce = 15f;
+    public LayerMask                GroundLayer;
+
+    private bool                    isFacingRight = false;
+    private bool                    isGrounded = true;
+    private bool                    isDead = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        rb2d = GetComponent<Rigidbody2D>();
         cc = GetComponent<CircleCollider2D>();
         timeController = FindObjectOfType(typeof(TimeController)) as TimeController;
-
-        //animator.SetBool("Grounded", true);
     }
+
 
     // Update is called once per frame
     void Update()
     {
         if (!timeController.reversing)
-        {
             Move();
-        }
-    }
-
-
-    /// <summary>
-    /// All physics related code should go here.
-    /// </summary>
-    private void FixedUpdate()
-    {
-        // Jumping
-        if (cc.IsTouchingLayers(GroundLayer))
-        {
-            if (cc.IsTouchingLayers())
-            {
-                // We are on the ground, allow jumping.
-                //animator.SetBool("Grounded", true);
-            }
-            else
-            {
-                // We're not on the ground, jumping should not be allowed at this time.
-                //animator.SetBool("Grounded", false);
-            }
-        }
     }
 
 
@@ -79,7 +56,7 @@ public class PlayerCharacterController : MonoBehaviour
     /// </summary>
     private void FlipCharacter()
     {
-        facingRight = !facingRight;
+        isFacingRight = !isFacingRight;
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
@@ -94,37 +71,51 @@ public class PlayerCharacterController : MonoBehaviour
     /// </summary>
     private void Move()
     {
+        if (!isGrounded && cc.IsTouchingLayers(GroundLayer))
+        {
+            isGrounded = true;
+            animator.SetBool("Grounded", isGrounded);
+        }
+
+        if (isGrounded && !cc.IsTouchingLayers(GroundLayer))
+        {
+            isGrounded = false;
+            animator.SetBool("Grounded", isGrounded);
+        }
+
         float move = Input.GetAxis("Horizontal");
-        Vector3 currentVelocity = Vector3.zero;
-        Vector3 targetVelocity = new Vector2(move * MoveForce, rb.velocity.x);
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, MovementSmoothing);
 
-        //animator.SetFloat("HSpeed", Mathf.Abs(rb.velocity.x));
-        //animator.SetFloat("VSpeed", rb.velocity.y);
+        // Flip the character to face the right direction
+        if (move > 0)
+            transform.localScale = new Vector3(-2.0f, 2.0f, 2.0f);
+        else if (move < 0)
+            transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
 
-        // The player is facing left but needs to face right, or vice versa
-        if (move > 0 && !facingRight)
-        {
-            FlipCharacter();
-        }
-        else if (move < 0 && facingRight)
-        {
-            FlipCharacter();
-        }
+
+        // Character core movement
+        //Vector3 currentVelocity = Vector3.zero;
+        //Vector3 targetVelocity = new Vector2(move * MoveForce, rb2d.velocity.x);
+        //rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref currentVelocity, MovementSmoothing);
+
+
+        rb2d.velocity = new Vector2(move * MoveForce, rb2d.velocity.y);
+        animator.SetFloat("VSpeed", rb2d.velocity.y);
+
+        Debug.Log("isGrounded? " + isGrounded);
 
         // KEY_JUMP is defined at the top of this file. Do not hardcode a key here!
-        if (Input.GetKeyDown(KEY_JUMP))
+        if (Input.GetKeyDown(KEY_JUMP) && isGrounded)
         {
-            /*
-             * need to fix animator
-            if (animator.GetBool("Grounded"))
-            {
-            */
-            Debug.Log("Jumping!");
-            rb.AddForce(new Vector2(1f, JumpForce));
-            //animator.SetTrigger("Jump");
-            //}
+            Debug.Log("Jumping");
+            animator.SetTrigger("Jump");
+            isGrounded = false;
+            animator.SetBool("Grounded", isGrounded);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, JumpForce);
         }
+        else if (Mathf.Abs(move) > Mathf.Epsilon)
+            animator.SetBool("Running", true);
+        else
+            animator.SetBool("Running", false);
     }
 
 
@@ -134,7 +125,6 @@ public class PlayerCharacterController : MonoBehaviour
     private void Climb()
     {
         float y = Input.GetAxis("Vertical");
-
     }
 
 
@@ -147,7 +137,9 @@ public class PlayerCharacterController : MonoBehaviour
         // Double-check that the health is actually at its minimum value before we kill the player.
         if (health == MIN_HEALTH)
         {
-            Debug.Log("You are dead. Not big surprise.");
+            //Debug.Log("You are dead. Not big surprise.");
+            animator.SetTrigger("Death");
+            isDead = true;
         }
     }
 
