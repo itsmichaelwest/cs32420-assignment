@@ -101,12 +101,9 @@ public class PlayerCharacterController : MonoBehaviour
         rb2d.velocity = new Vector2(move * MoveForce, rb2d.velocity.y);
         animator.SetFloat("VSpeed", rb2d.velocity.y);
 
-        Debug.Log("isGrounded? " + isGrounded);
-
         // KEY_JUMP is defined at the top of this file. Do not hardcode a key here!
         if (Input.GetKeyDown(KEY_JUMP) && isGrounded)
         {
-            Debug.Log("Jumping");
             animator.SetTrigger("Jump");
             isGrounded = false;
             animator.SetBool("Grounded", isGrounded);
