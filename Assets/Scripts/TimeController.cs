@@ -1,58 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TimeController : MonoBehaviour
 {
-
-    public GameObject player;
-
-    public ArrayList playerPositions;
-    public bool reversing = false;
-
-    private const string KEY_REWIND = "r";
+    private Transform                   thing;
+    public bool                         reversing = false;
+    private LinkedList<Vector3>         positions;
+    private const string                KEY_REWIND = "r";               // Key bound to reverse function
+    private const int                   MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
 
     // Start is called before the first frame update
     void Start()
     {
-        playerPositions = new ArrayList();
+        thing = GetComponent<Transform>();
+        positions = new LinkedList<Vector3>();
     }
 
     void Update()
     {
-        // If the user is pressing the reverse key, set reversing to be true.
-        if (Input.GetKeyDown(KEY_REWIND))
+        if (Input.GetKey(KEY_REWIND))
         {
-            Debug.Log("Reversing triggered!");
             reversing = true;
-
-            Debug.Log("Reversing now!");
-            player.transform.position = (Vector3)playerPositions[playerPositions.Count - 1];
-            playerPositions.RemoveAt(playerPositions.Count - 1);
+            Time.timeScale = 2;
         }
         else
         {
-            // We aren't reversing right now, so store the player position
-            // Store the player's position on each update, we can then rewind the action
-            //playerPositions.Add(player.transform.position);
+            reversing = false;
+            Time.timeScale = 1;
         }
     }
 
-    /*
     void FixedUpdate()
     {
         if (!reversing)
         {
-            // We aren't reversing right now, so store the player position
-            // Store the player's position on each update, we can then rewind the action
-            playerPositions.Add(player.transform.position);
+            if (positions.Count() >= (MAXIMUM_REVERSE_SECS * 60))
+                positions.RemoveFirst();
+            positions.AddLast(thing.position);
         }
         else
         {
-            Debug.Log("Reversing now!");
-            player.transform.position = (Vector3)playerPositions[playerPositions.Count - 1];
-            playerPositions.RemoveAt(playerPositions.Count - 1);
+            thing.position = (Vector3)positions.Last();
+            positions.RemoveLast();
         }
     }
-    */
 }
