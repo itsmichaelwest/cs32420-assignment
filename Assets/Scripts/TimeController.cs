@@ -10,12 +10,14 @@ public class TimeController : MonoBehaviour
     private LinkedList<Vector3>         positions;
     private const string                KEY_REWIND = "r";               // Key bound to reverse function
     private const int                   MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
+    private MenuController              menu;
 
     // Start is called before the first frame update
     void Start()
     {
         thing = GetComponent<Transform>();
         positions = new LinkedList<Vector3>();
+        menu = FindObjectOfType(typeof(MenuController)) as MenuController;
     }
 
     void Update()
@@ -27,8 +29,11 @@ public class TimeController : MonoBehaviour
         }
         else
         {
-            reversing = false;
-            Time.timeScale = 1;
+            if (menu.isGameStarted)
+            {
+                reversing = false;
+                Time.timeScale = 1;
+            }
         }
     }
 

@@ -7,21 +7,18 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
 
-    public GameObject MainMenu;
-    public GameObject PauseMenu;
-    public GameObject GameOverMenu;
-    public Button StartButton;
-    public Button ResumeButton;
-    public Button ResetButton;
-    public Button RewindButton;
+    public GameObject           MainMenu;
+    public GameObject           PauseMenu;
+    public GameObject           GameOverMenu;
+    public Button               StartButton;
+    public Button               ResumeButton;
+    public Button               ResetButton;
 
-    private PlayerCharacterController player;
+    public bool                 isGameStarted = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
-
         Time.timeScale = 0;
         MainMenu.SetActive(true);
         PauseMenu.SetActive(false);
@@ -31,7 +28,6 @@ public class MenuController : MonoBehaviour
         ResumeButton.onClick.AddListener(HidePausePanel);
 
         ResetButton.onClick.AddListener(RestartLevel);
-        RewindButton.onClick.AddListener(RewindLevel);
     }
 
     // Update is called once per frame
@@ -56,33 +52,32 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene("Level1");
     }
 
-    private void RewindLevel()
-    {
-        player.gameObject.GetComponent<TimeController>().Rewind(20);
-    }
-
 
     public void HideMainMenu()
     {
         Time.timeScale = 1;
         MainMenu.SetActive(false);
+        isGameStarted = true;
     }
 
     public void ShowPausePanel()
     {
         Time.timeScale = 0;
         PauseMenu.SetActive(true);
+        isGameStarted = false;
     }
 
     private void HidePausePanel()
     {
         PauseMenu.SetActive(false);
         Time.timeScale = 1;
+        isGameStarted = true;
     }
 
     public void ShowGameOverMenu()
     {
         GameOverMenu.SetActive(true);
         Time.timeScale = 0;
+        isGameStarted = false;
     }
 }
