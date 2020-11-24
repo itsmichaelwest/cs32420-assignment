@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8205288075186301223}
   - component: {fileID: 8205288075186301242}
   - component: {fileID: 8205288075186301243}
+  - component: {fileID: 1350130510454785276}
   m_Layer: 2
   m_Name: FallingRock
   m_TagString: Untagged
@@ -150,3 +151,16 @@ PolygonCollider2D:
       - {x: 0.32895923, y: 0.0934124}
       - {x: 0.328125, y: 0.28117037}
       - {x: 0.14137936, y: 0.46875}
+--- !u!114 &1350130510454785276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8205288075186301222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf83661a80e249f48ffd8373f7b3df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reversing: 0
