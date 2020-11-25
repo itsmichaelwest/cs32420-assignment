@@ -11,6 +11,7 @@ public class TimeController : MonoBehaviour
     private const string                KEY_REWIND = "r";               // Key bound to reverse function
     private const int                   MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
     private MenuController              menu;
+    private PlayerCharacterController   player;
 
     // Start is called before the first frame update
     void Start()
@@ -18,21 +19,26 @@ public class TimeController : MonoBehaviour
         thing = GetComponent<Transform>();
         positions = new LinkedList<Vector3>();
         menu = FindObjectOfType(typeof(MenuController)) as MenuController;
+        player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
     }
 
     void Update()
     {
+        // If user is holding the rewind key, begin reversing time. Otherwise stop reversing time.
         if (Input.GetKey(KEY_REWIND))
         {
             reversing = true;
             Time.timeScale = 2;
+            player.SetIsKillable(false);
         }
         else
         {
+            // This is to prevent timeScale being set to 1 before the main menu is dismissed.
             if (menu.isGameStarted)
             {
                 reversing = false;
                 Time.timeScale = 1;
+                player.SetIsKillable(true);
             }
         }
     }

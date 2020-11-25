@@ -6,31 +6,32 @@ using UnityEngine.Tilemaps;
 
 public class PlayerCharacterController : MonoBehaviour
 {
-    private Animator                animator;
-    private Rigidbody2D             rb2d;
-    private CircleCollider2D        cc;
-    private PolygonCollider2D       pc2d;
+    private Animator                    animator;
+    private Rigidbody2D                 rb2d;
+    private CircleCollider2D            cc;
+    private PolygonCollider2D           pc2d;
 
-    private const string KEY_JUMP = "space";
+    private const string                KEY_JUMP = "space";
 
-    private TimeController          timeController;
-    private MenuController          menuController;
+    private TimeController              timeController;
+    private MenuController              menuController;
 
     // Do not use numbers when referring to the maximum or minimum health values, instead
     // prefer these constants.
     // Health will always start at maximum. Use SetHealth() to adjust based on an integer
     // value.
-    private const int               MAX_HEALTH = 100;
-    private const int               MIN_HEALTH = 0;
-    public int                      health = MAX_HEALTH;
+    private const int                   MAX_HEALTH = 100;
+    private const int                   MIN_HEALTH = 0;
+    public int                          health = MAX_HEALTH;
 
-    [Range(0, .3f)] public float    MovementSmoothing = .05f;
-    public float                    JumpForce = 10f;
-    public float                    MoveForce = 15f;
-    public LayerMask                GroundLayer;
+    [Range(0, .3f)] public float        MovementSmoothing = .05f;
+    public float                        JumpForce = 10f;
+    public float                        MoveForce = 15f;
+    public LayerMask                    GroundLayer;
 
-    private bool                    isFacingRight = false;
-    private bool                    isGrounded = true;
+    private bool                        isFacingRight = false;
+    private bool                        isGrounded = true;
+    private bool                        isKillable = true;
 
 
     // Start is called before the first frame update
@@ -138,9 +139,12 @@ public class PlayerCharacterController : MonoBehaviour
         // Double-check that the health is actually at its minimum value before we kill the player.
         if (health == MIN_HEALTH)
         {
-            //Debug.Log("You are dead. Not big surprise.");
-            animator.SetTrigger("Death");
-            menuController.ShowGameOverMenu();
+            // Obviously we cannot kill the player if they are in a state where killing is disallowed.
+            if (isKillable)
+            {
+                animator.SetTrigger("Death");
+                menuController.ShowGameOverMenu();
+            }
         }
     }
 
@@ -172,5 +176,11 @@ public class PlayerCharacterController : MonoBehaviour
                 health = health + healthModifier;
             }
         }
+    }
+
+
+    public void SetIsKillable(bool killable)
+    {
+        isKillable = killable;
     }
 }
