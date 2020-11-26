@@ -11,47 +11,43 @@ public class LadderController : MonoBehaviour
     public float MoveForce = 10f;
 
     /// <summary>
-    /// Stop gravity impacting the player while they climb on the ladder, otherwise they'd
-    /// just fall down as they tried to climb.
+    /// Stop gravity impacting the player while they climb on the ladder,
+    /// otherwise they'd just fall down as they tried to climb.
     /// </summary>
     /// <param name="collider"></param>
-    void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collider.tag == "Player")
+        if (collision.tag == "Player")
         {
-            collider.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+            collision.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             FloatingPlatforms.gameObject.GetComponent<TilemapCollider2D>().enabled = false;
         }
     }
 
 
-
-    void OnTriggerStay2D(Collider2D collider)
+    /// <summary>
+    /// While the player is within the ladder's confines, we will allow them to
+    /// climb up using vertical input.
+    /// </summary>
+    /// <param name="collider"></param>
+    void OnTriggerStay2D(Collider2D collision)
     {
-        if (!(collider.tag == "Player")) { return; }
+        if (!(collision.tag == "Player")) return;
 
         float move = Input.GetAxis("Vertical");
-        collider.attachedRigidbody.velocity = new Vector2(collider.attachedRigidbody.velocity.x, move * MoveForce);
-        
-        //Vector3 currentVelocity = Vector3.zero;
-        //Vector3 targetVelocity = new Vector2(collider.attachedRigidbody.velocity.y, move * MoveForce);
-        //collider.attachedRigidbody.velocity = Vector3.SmoothDamp(collider.attachedRigidbody.velocity, targetVelocity, ref currentVelocity, MovementSmoothing);
-
-
-        //collider.transform.Translate(new Vector3(0, y, 0));
+        collision.attachedRigidbody.velocity = new Vector2(collision.attachedRigidbody.velocity.x, move * MoveForce);
     }
-
 
 
     /// <summary>
     /// Restores gravity to the player once they exit the ladder.
     /// </summary>
     /// <param name="collider"></param>
-    void OnTriggerExit2D(Collider2D collider)
+    void OnTriggerExit2D(Collider2D collision)
     {
-        if (collider.tag == "Player")
+        if (collision.tag == "Player")
         {
-            collider.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
+            collision.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
             FloatingPlatforms.gameObject.GetComponent<TilemapCollider2D>().enabled = true;
         }
     }

@@ -24,7 +24,8 @@ public class TimeController : MonoBehaviour
 
     void Update()
     {
-        // If user is holding the rewind key, begin reversing time. Otherwise stop reversing time.
+        // If user is holding the rewind key, begin reversing time. Otherwise
+        // stop reversing time.
         if (Input.GetKey(KEY_REWIND))
         {
             reversing = true;
@@ -33,11 +34,23 @@ public class TimeController : MonoBehaviour
         }
         else
         {
-            // This is to prevent timeScale being set to 1 before the main menu is dismissed.
+            // This is to prevent timeScale being set to 1 before the main menu
+            // is dismissed.
             if (menu.isGameStarted)
             {
                 reversing = false;
                 Time.timeScale = 1;
+                player.SetIsKillable(true);
+            }
+        }
+
+        // Clear the list of positions once the rewind key is let go, as we only
+        // store one rewind session.
+        if (Input.GetKeyUp(KEY_REWIND))
+        {
+            if (menu.isGameStarted)
+            {
+                positions.Clear();
                 player.SetIsKillable(true);
             }
         }
@@ -53,8 +66,11 @@ public class TimeController : MonoBehaviour
         }
         else
         {
-            thing.position = positions.Last();
-            positions.RemoveLast();
+            if (positions.Count() != 0)
+            {
+                thing.position = positions.Last();
+                positions.RemoveLast();
+            }
         }
     }
 

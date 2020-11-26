@@ -8,7 +8,6 @@ public class PlayerCharacterController : MonoBehaviour
 {
     private Animator                    animator;
     private Rigidbody2D                 rb2d;
-    private CircleCollider2D            cc;
     private PolygonCollider2D           pc2d;
 
     private const string                KEY_JUMP = "space";
@@ -29,7 +28,7 @@ public class PlayerCharacterController : MonoBehaviour
     public float                        MoveForce = 15f;
     public LayerMask                    GroundLayer;
 
-    private bool                        isFacingRight = false;
+    private bool                        isFacingRight = true;
     private bool                        isGrounded = true;
     private bool                        isKillable = true;
 
@@ -39,7 +38,6 @@ public class PlayerCharacterController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
-        cc = GetComponent<CircleCollider2D>();
         pc2d = GetComponent<PolygonCollider2D>();
         timeController = GetComponent<TimeController>();
 
@@ -52,19 +50,6 @@ public class PlayerCharacterController : MonoBehaviour
     {
         if (!timeController.reversing)
             Move();
-    }
-
-
-    /// <summary>
-    /// Flip the character in the opposite direction. The current direction is stored as a boolean
-    /// variable, while the actual flip operation is handled by simply multiplying the scale by -1.
-    /// </summary>
-    private void FlipCharacter()
-    {
-        isFacingRight = !isFacingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
     }
 
 
@@ -92,9 +77,15 @@ public class PlayerCharacterController : MonoBehaviour
 
         // Flip the character to face the right direction
         if (move > 0)
+        {
             transform.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
+            isFacingRight = !isFacingRight;
+        }
         else if (move < 0)
+        {
             transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            isFacingRight = !isFacingRight;
+        }
 
 
         // Character core movement
@@ -118,15 +109,6 @@ public class PlayerCharacterController : MonoBehaviour
             animator.SetBool("Running", true);
         else
             animator.SetBool("Running", false);
-    }
-
-
-    /// <summary>
-    /// Climb a ladder (or other block tagged as being climbable)!
-    /// </summary>
-    private void Climb()
-    {
-        float y = Input.GetAxis("Vertical");
     }
 
 
