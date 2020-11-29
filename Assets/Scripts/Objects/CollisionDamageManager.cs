@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RockDamage : MonoBehaviour
+public class CollisionDamageManager : MonoBehaviour
 {
-    PlayerCharacterController player;
+    private PlayerCharacterController player;
 
     // Start is called before the first frame update
     void Start()
@@ -12,11 +12,12 @@ public class RockDamage : MonoBehaviour
         player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            player.SetHealth(-100);
+            // This has the effect of killing the player
+            player.DecreaseHealth(100);
         }
     }
 }

@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8205288075186301241}
   - component: {fileID: 8205288075186301240}
-  - component: {fileID: 8205288075186301223}
   - component: {fileID: 8205288075186301242}
   - component: {fileID: 8205288075186301243}
   - component: {fileID: 1350130510454785276}
+  - component: {fileID: 8236066307655677134}
+  - component: {fileID: 2319502480133069425}
   m_Layer: 2
   m_Name: FallingRock
   m_TagString: Untagged
@@ -85,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8205288075186301223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8205288075186301222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a04c3981ad1444e268fe2b14ac5c3886, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &8205288075186301242
 Rigidbody2D:
   serializedVersion: 4
@@ -164,3 +153,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reversing: 0
+--- !u!114 &8236066307655677134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8205288075186301222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e2453f02dcc8444bb02044e2c575945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &2319502480133069425
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8205288075186301222}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.65625, y: 0.46875}
+    newSize: {x: 0.65625, y: 0.46875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.17304659, y: 0.46875}
+      - {x: -0.32854223, y: 0.31283712}
+      - {x: -0.328125, y: 0.12507963}
+      - {x: -0.20346212, y: -0.000834465}
+      - {x: 0.23638129, y: -0.0004172325}
+      - {x: 0.32895923, y: 0.0934124}
+      - {x: 0.328125, y: 0.28117037}
+      - {x: 0.14137936, y: 0.46875}

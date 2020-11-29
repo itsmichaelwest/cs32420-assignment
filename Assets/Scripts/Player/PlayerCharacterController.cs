@@ -2,18 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PlayerCharacterController : MonoBehaviour
 {
     private Animator                    animator;
     private Rigidbody2D                 rb2d;
     private PolygonCollider2D           pc2d;
-
-    private const string                KEY_JUMP = "space";
-
     private TimeController              timeController;
-    private MenuController              menuController;
 
     // Do not use numbers when referring to the maximum or minimum health values, instead
     // prefer these constants.
@@ -21,17 +16,17 @@ public class PlayerCharacterController : MonoBehaviour
     // value.
     private const int                   MAX_HEALTH = 100;
     private const int                   MIN_HEALTH = 0;
-    public int                          health = MAX_HEALTH;
+    protected int                       health = MAX_HEALTH;
 
     [Range(0, .3f)] public float        MovementSmoothing = .05f;
-    public float                        JumpForce = 10f;
-    public float                        MoveForce = 15f;
+    public float                        JumpForce = 11f;
+    public float                        MoveForce = 7.5f;
     public LayerMask                    GroundLayer;
 
+    // Mutually exclusive player states
     private bool                        isFacingRight = true;
     private bool                        isGrounded = true;
     private bool                        isKillable = true;
-
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +35,6 @@ public class PlayerCharacterController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
         timeController = GetComponent<TimeController>();
-
-        menuController = FindObjectOfType(typeof(MenuController)) as MenuController;
     }
 
 
@@ -87,18 +80,11 @@ public class PlayerCharacterController : MonoBehaviour
             isFacingRight = !isFacingRight;
         }
 
-
-        // Character core movement
-        //Vector3 currentVelocity = Vector3.zero;
-        //Vector3 targetVelocity = new Vector2(move * MoveForce, rb2d.velocity.x);
-        //rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref currentVelocity, MovementSmoothing);
-
-
         rb2d.velocity = new Vector2(move * MoveForce, rb2d.velocity.y);
         animator.SetFloat("VSpeed", rb2d.velocity.y);
 
         // KEY_JUMP is defined at the top of this file. Do not hardcode a key here!
-        if (Input.GetKeyDown(KEY_JUMP) && isGrounded)
+        if (Input.GetKeyDown(Keys.JUMP) && isGrounded)
         {
             animator.SetTrigger("Jump");
             isGrounded = false;
@@ -125,44 +111,63 @@ public class PlayerCharacterController : MonoBehaviour
             if (isKillable)
             {
                 animator.SetTrigger("Death");
-                menuController.ShowGameOverMenu();
+                GameOverMenuController.GameOver();
             }
         }
     }
 
 
     /// <summary>
-    /// Set the player's health. <c>healthModifier</c> can be any integer value, though constraints
-    /// exist in to prevent the health exceeding the upper or lower boundaries defined above.
-    /// The health is not actively monitored, so it is important to only use <c>SetHealth</c> to
-    /// adjust it.
+    /// Increase the player's health by the amount specified.
     /// </summary>
     /// <param name="healthModifier"></param>
-    public void SetHealth(int healthModifier)
+    public void IncreaseHealth(int healthModifier)
     {
-        // Check the player isn't dead before we try this one. No point setting health on a dead
-        // player now, is there?
-        if (health != MIN_HEALTH)
+        if (health != MAX_HEALTH)
         {
-            if ((health + healthModifier) >= MAX_HEALTH)
+            if ((health + healthModifier) <= MAX_HEALTH)
             {
                 health = MAX_HEALTH;
             }
-            else if ((health + healthModifier) <= MIN_HEALTH)
+            else
+            {
+                health =+ healthModifier;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Decrease the player's health by the amount specified.
+    /// </summary>
+    /// <param name="healthModifier"></param>
+    public void DecreaseHealth(int healthModifier)
+    {
+        if (health != MIN_HEALTH)
+        {
+            if ((health - healthModifier) <= MIN_HEALTH)
             {
                 health = MIN_HEALTH;
                 Die();
             }
             else
             {
-                health = health + healthModifier;
+                health =- healthModifier;
             }
         }
     }
 
 
-    public void SetIsKillable(bool killable)
-    {
-        isKillable = killable;
-    }
+    /// <summary>
+    /// Fetch the player's health.
+    /// </summary>
+    /// <returns></returns>
+    public int ReturnHealth() { return health; }
+
+
+    /// <summary>
+    /// Set if the player can be killed by damage objects in the scene.
+    /// </summary>
+    /// <param name="killable">Set to true if the player can be killed, false if not.</param>
+    public void SetIsKillable(bool killable) { isKillable = killable; }
 }

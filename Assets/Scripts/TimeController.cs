@@ -8,7 +8,6 @@ public class TimeController : MonoBehaviour
     private Transform                   thing;
     public bool                         reversing = false;
     private LinkedList<Vector3>         positions;
-    private const string                KEY_REWIND = "r";               // Key bound to reverse function
     private const int                   MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
     private MenuController              menu;
     private PlayerCharacterController   player;
@@ -26,7 +25,7 @@ public class TimeController : MonoBehaviour
     {
         // If user is holding the rewind key, begin reversing time. Otherwise
         // stop reversing time.
-        if (Input.GetKey(KEY_REWIND))
+        if (Input.GetKey(Keys.REVERSE))
         {
             reversing = true;
             Time.timeScale = 2;
@@ -36,7 +35,7 @@ public class TimeController : MonoBehaviour
         {
             // This is to prevent timeScale being set to 1 before the main menu
             // is dismissed.
-            if (menu.isGameStarted)
+            if (menu.isGameStarted())
             {
                 reversing = false;
                 Time.timeScale = 1;
@@ -46,9 +45,9 @@ public class TimeController : MonoBehaviour
 
         // Clear the list of positions once the rewind key is let go, as we only
         // store one rewind session.
-        if (Input.GetKeyUp(KEY_REWIND))
+        if (Input.GetKeyUp(Keys.REVERSE))
         {
-            if (menu.isGameStarted)
+            if (menu.isGameStarted())
             {
                 positions.Clear();
                 player.SetIsKillable(true);
