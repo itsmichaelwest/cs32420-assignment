@@ -407,9 +407,6 @@ TextureImporter:
   - first:
       213: 21300268
     second: TX Village Props Fire Bowl
-  - first:
-      213: -3806943691756881100
-    second: TX Village Props_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -478,7 +475,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
@@ -489,18 +486,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -1497,12 +1482,12 @@ TextureImporter:
       name: TX Village Props Grass A
       rect:
         serializedVersion: 2
-        x: 0
+        x: 5
         y: 31
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 17
+        height: 10
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1518,12 +1503,12 @@ TextureImporter:
       name: TX Village Props Grass B
       rect:
         serializedVersion: 2
-        x: 36
+        x: 40
         y: 31
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 23
+        height: 11
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1539,12 +1524,12 @@ TextureImporter:
       name: TX Village Props Grass C
       rect:
         serializedVersion: 2
-        x: 64
+        x: 72
         y: 31
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 11
+        height: 7
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1581,12 +1566,12 @@ TextureImporter:
       name: TX Village Props Grass D
       rect:
         serializedVersion: 2
-        x: 0
+        x: 4
         y: 4
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 19
+        height: 12
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1602,12 +1587,12 @@ TextureImporter:
       name: TX Village Props Grass E
       rect:
         serializedVersion: 2
-        x: 33
+        x: 36
         y: 4
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 24
+        height: 9
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1623,12 +1608,12 @@ TextureImporter:
       name: TX Village Props Grass F
       rect:
         serializedVersion: 2
-        x: 63
+        x: 68
         y: 4
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 17
+        height: 11
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1648,8 +1633,8 @@ TextureImporter:
         y: 46
         width: 7
         height: 7
-      alignment: 9
-      pivot: {x: 0.5, y: 0.49999836}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1667,7 +1652,7 @@ TextureImporter:
         serializedVersion: 2
         x: 4
         y: 64
-        width: 95
+        width: 57
         height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1688,7 +1673,7 @@ TextureImporter:
         serializedVersion: 2
         x: 65
         y: 64
-        width: 95
+        width: 89
         height: 35
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
