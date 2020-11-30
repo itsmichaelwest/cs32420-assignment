@@ -2,7 +2,7 @@
 
 public class CollisionDamageManager : MonoBehaviour
 {
-    private PlayerCharacterController player;
+    private PlayerCharacterController   player;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +21,6 @@ public class CollisionDamageManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        RockFallingController.DecreaseRockCount(1);
+        transform.parent.GetComponent<RockFallingController>().DecreaseRockCount(1);
     }
 }

@@ -7,7 +7,7 @@ public class RockFallingController : MonoBehaviour
     public GameObject       rock;
 
     private const int       MAX_ROCK_SPAWNS = 10;
-    private static int      rockCount = 0;          // Always starts at 0.
+    private int             rockCount = 0;          // Always starts at 0.
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,13 @@ public class RockFallingController : MonoBehaviour
 
         if ((hit.collider.gameObject.tag == "Player") && (rockCount <= MAX_ROCK_SPAWNS))
         {
-            Instantiate(rock, transform.position, Quaternion.identity);
+            GameObject child = Instantiate(rock, transform.position, Quaternion.identity);
+            child.transform.parent = transform;
             rockCount++;
         }
     }
 
-    public static void DecreaseRockCount(int count)
+    public void DecreaseRockCount(int count)
     {
         rockCount = rockCount - count;
     }

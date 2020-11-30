@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SkyFollowManager : FollowManager
 {
@@ -10,13 +8,18 @@ public class SkyFollowManager : FollowManager
         if (player)
         {
             var x = transform.position.x;
+            var y = transform.position.y;
 
             if (Mathf.Abs(x - player.transform.position.x) > margin.x)
             {
                 x = Mathf.Lerp(x, player.transform.position.x, moveSpeed * Time.deltaTime);
             }
+            else if (Mathf.Abs(y - player.transform.position.y) > margin.y)
+            {
+                y = Mathf.Lerp(y, player.transform.position.y, moveSpeed * Time.deltaTime);
+            }
 
-            transform.position = new Vector2(x, transform.position.y);
+            transform.position = new Vector2(x, y);
         }
     }
 }

@@ -22,6 +22,7 @@ public class PlayerCharacterController : MonoBehaviour
     public float                        JumpForce = 11f;
     public float                        MoveForce = 7.5f;
     public LayerMask                    GroundLayer;
+    public int                          FallOffBoundary = 15;
 
     // Mutually exclusive player states
     private bool                        isFacingRight = true;
@@ -42,7 +43,10 @@ public class PlayerCharacterController : MonoBehaviour
     void Update()
     {
         if (!timeController.reversing)
+        {
             Move();
+            CheckPosition();
+        }
     }
 
 
@@ -113,6 +117,21 @@ public class PlayerCharacterController : MonoBehaviour
                 animator.SetTrigger("Death");
                 GameOverMenuController.GameOver();
             }
+        }
+    }
+
+
+
+    /// <summary>
+    /// If the player falls out of the world, they should die. But first, we check to make
+    /// sure that the player is not close to any collision layers. This is to make sure that
+    /// we don't kill the player if they are deep underground.
+    /// </summary>
+    private void CheckPosition()
+    {
+        if (transform.position.y <= (Mathf.Abs(FallOffBoundary) * (-1)))
+        {
+            Die();
         }
     }
 
