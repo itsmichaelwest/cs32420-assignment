@@ -28,7 +28,6 @@ public class PlayerCharacterController : MonoBehaviour
     public bool                         isFacingRight = true;
     public bool                         isGrounded = true;
     public bool                         isKillable = true;
-    private bool                        isDead = false;
     private int                         AnimatorState = 0;
 
     // Start is called before the first frame update
@@ -126,7 +125,6 @@ public class PlayerCharacterController : MonoBehaviour
             // Obviously we cannot kill the player if they are in a state where killing is disallowed.
             if (isKillable)
             {
-                isDead = true;
                 animator.SetTrigger("Death");
                 GameOverMenuController.GameOver();
             }
@@ -153,7 +151,6 @@ public class PlayerCharacterController : MonoBehaviour
     {
         if (health > MIN_HEALTH)
         {
-            isDead = false;
             animator.SetTrigger("Recover");
         }
     }

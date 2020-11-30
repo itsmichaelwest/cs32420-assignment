@@ -20,6 +20,7 @@ public class GameOverMenuController : MenuController
     {
         if (Input.GetKey(Keys.REVERSE))
         {
+            TimeController.buffersPaused = false;
             gameStarted = true;
             MenuStatic.SetActive(false);
         }
@@ -29,6 +30,7 @@ public class GameOverMenuController : MenuController
     {
         MenuStatic.SetActive(true);
         Time.timeScale = 0;
+        TimeController.buffersPaused = true;
         gameStarted = false;
     }
 }

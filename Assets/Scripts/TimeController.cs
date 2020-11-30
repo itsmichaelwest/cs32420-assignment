@@ -16,6 +16,8 @@ public class TimeController : MonoBehaviour
     private LinkedList<int>             animator;
     private LinkedList<bool>            isFacingRight;
 
+    public static bool                  buffersPaused = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,36 +36,40 @@ public class TimeController : MonoBehaviour
 
     void Update()
     {
-        // If user is holding the rewind key, begin reversing time. Otherwise
-        // stop reversing time.
-        if (Input.GetKey(Keys.REVERSE))
+        if (!buffersPaused)
         {
-            reversing = true;
-            Time.timeScale = 2;
-            player.SetIsKillable(false);
-        }
-        else
-        {
-            // This is to prevent timeScale being set to 1 before the main menu
-            // is dismissed.
-            if (menu.isGameStarted())
+            // If user is holding the rewind key, begin reversing time. Otherwise
+            // stop reversing time.
+            if (Input.GetKey(Keys.REVERSE))
             {
-                reversing = false;
-                Time.timeScale = 1;
-                player.SetIsKillable(true);
+                reversing = true;
+                Time.timeScale = 2;
+                player.SetIsKillable(false);
+            }
+            else
+            {
+                // This is to prevent timeScale being set to 1 before the main menu
+                // is dismissed.
+                if (menu.isGameStarted())
+                {
+                    reversing = false;
+                    Time.timeScale = 1;
+                    player.SetIsKillable(true);
+                }
+            }
+
+            // Clear the list of positions once the rewind key is let go, as we only
+            // store one rewind session.
+            if (Input.GetKeyUp(Keys.REVERSE))
+            {
+                if (menu.isGameStarted())
+                {
+                    positions.Clear();
+                    player.SetIsKillable(true);
+                }
             }
         }
 
-        // Clear the list of positions once the rewind key is let go, as we only
-        // store one rewind session.
-        if (Input.GetKeyUp(Keys.REVERSE))
-        {
-            if (menu.isGameStarted())
-            {
-                positions.Clear();
-                player.SetIsKillable(true);
-            }
-        }
     }
 
     void FixedUpdate()

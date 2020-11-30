@@ -23,6 +23,7 @@ public class PauseMenuController : MenuController
 
     public static void Show()
     {
+        TimeController.buffersPaused = false;
         Time.timeScale = 0;
         MenuStatic.SetActive(true);
         gameStarted = false;
@@ -31,6 +32,7 @@ public class PauseMenuController : MenuController
     public static void Hide()
     {
         MenuStatic.SetActive(false);
+        TimeController.buffersPaused = true;
         Time.timeScale = 1;
         gameStarted = true;
     }
