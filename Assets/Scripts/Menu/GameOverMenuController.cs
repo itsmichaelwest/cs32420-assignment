@@ -16,6 +16,15 @@ public class GameOverMenuController : MenuController
         RestartButton.onClick.AddListener(RestartLevel);
     }
 
+    void Update()
+    {
+        if (Input.GetKey(Keys.REVERSE))
+        {
+            gameStarted = true;
+            MenuStatic.SetActive(false);
+        }
+    }
+
     public static void GameOver()
     {
         MenuStatic.SetActive(true);

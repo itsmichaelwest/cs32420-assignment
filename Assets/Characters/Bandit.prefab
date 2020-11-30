@@ -56,6 +56,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   FallOffBoundary: 15
+  isFacingRight: 1
+  isGrounded: 1
+  isKillable: 1
 --- !u!95 &95734438044755836
 Animator:
   serializedVersion: 3

@@ -1,16 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class TimeController : MonoBehaviour
 {
-    private Transform                   thing;
+    protected Transform                 thing;
     public bool                         reversing = false;
-    private LinkedList<Vector3>         positions;
-    private const int                   MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
+    protected LinkedList<Vector3>       positions;
+    protected const int                 MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
     private MenuController              menu;
     private PlayerCharacterController   player;
+
+    // Will apply to player characters only
+    private LinkedList<int>             health;
+    private LinkedList<int>             animator;
+    private LinkedList<bool>            isFacingRight;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +23,13 @@ public class TimeController : MonoBehaviour
         positions = new LinkedList<Vector3>();
         menu = FindObjectOfType(typeof(MenuController)) as MenuController;
         player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
+
+        if (thing.tag == "Player")
+        {
+            health = new LinkedList<int>();
+            animator = new LinkedList<int>();
+            isFacingRight = new LinkedList<bool>();
+        }
     }
 
     void Update()
@@ -57,6 +68,10 @@ public class TimeController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (thing.tag == "Player")
+        {
+            PlayerUpdate();
+        }
         if (!reversing)
         {
             if (positions.Count() >= (MAXIMUM_REVERSE_SECS * 60))
@@ -73,31 +88,73 @@ public class TimeController : MonoBehaviour
             else if (positions.Count() == 0)
             {
                 if (thing.tag == "Rock")
-                {
                     Destroy(thing.gameObject);
-                }
             }
         }
     }
 
-
-    /// <summary>
-    /// Rewind the level a specified number of seconds.
-    /// </summary>
-    /// <param name="seconds">The number of seconds to rewind. This
-    /// cannot be higher than the maximum number of rewind seconds allowed.</param>
-    public void Rewind(int seconds)
+    void PlayerUpdate()
     {
-        int secsToRewind;
-        if (seconds <= MAXIMUM_REVERSE_SECS)
-            secsToRewind = seconds;
-        else
-            secsToRewind = MAXIMUM_REVERSE_SECS;
-
-        for (int i = 0; i >= MAXIMUM_REVERSE_SECS; i++)
+        if (!reversing)
         {
-            thing.position = positions.Last();
-            positions.RemoveLast();
+            if (health.Count() >= (MAXIMUM_REVERSE_SECS * 60))
+                health.RemoveFirst();
+            health.AddLast(thing.gameObject.GetComponent<PlayerCharacterController>().ReturnHealth());
+
+            if (animator.Count() > (MAXIMUM_REVERSE_SECS * 60))
+                animator.RemoveFirst();
+            animator.AddLast(thing.gameObject.GetComponent<PlayerCharacterController>().ReturnAnimatorState());
+
+            if (isFacingRight.Count() > (MAXIMUM_REVERSE_SECS * 60))
+                isFacingRight.RemoveFirst();
+            isFacingRight.AddLast(thing.gameObject.GetComponent<PlayerCharacterController>().isFacingRight);
+        }
+        else
+        {
+            if (health.Count() != 0)
+            {
+                thing.gameObject.GetComponent<PlayerCharacterController>().DirectSetHealth(health.Last());
+                health.RemoveLast();
+            }
+
+            if (animator.Count() != 0)
+            {
+                int state = animator.Last();
+
+                switch (state)
+                {
+                    case 0:
+                        thing.gameObject.GetComponent<PlayerCharacterController>().AnimatorSetBool("Grounded", true);
+                        thing.gameObject.GetComponent<PlayerCharacterController>().AnimatorSetBool("Running", false);
+                        thing.gameObject.GetComponent<PlayerCharacterController>().isGrounded = true;
+                        break;
+                    case 1:
+                        thing.gameObject.GetComponent<PlayerCharacterController>().AnimatorSetBool("Grounded", false);
+                        thing.gameObject.GetComponent<PlayerCharacterController>().isGrounded = false;
+                        break;
+                    case 2:
+                        thing.gameObject.GetComponent<PlayerCharacterController>().AnimatorSetTrigger("Jump");
+                        thing.gameObject.GetComponent<PlayerCharacterController>().AnimatorSetBool("Grounded", false);
+                        thing.gameObject.GetComponent<PlayerCharacterController>().isGrounded = false;
+                        break;
+                    case 3:
+                        thing.gameObject.GetComponent<PlayerCharacterController>().AnimatorSetBool("Running", true);
+                        break;
+                    default:
+                        break;
+                }
+
+                animator.RemoveLast();
+            }
+
+            if (isFacingRight.Count() != 0)
+            {
+                if (isFacingRight.Last() == true)
+                    thing.gameObject.transform.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
+                else
+                    thing.gameObject.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                isFacingRight.RemoveLast();
+            }
         }
     }
 }

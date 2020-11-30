@@ -25,9 +25,11 @@ public class PlayerCharacterController : MonoBehaviour
     public int                          FallOffBoundary = 15;
 
     // Mutually exclusive player states
-    private bool                        isFacingRight = true;
-    private bool                        isGrounded = true;
-    private bool                        isKillable = true;
+    public bool                         isFacingRight = true;
+    public bool                         isGrounded = true;
+    public bool                         isKillable = true;
+    private bool                        isDead = false;
+    private int                         AnimatorState = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +48,7 @@ public class PlayerCharacterController : MonoBehaviour
         {
             Move();
             CheckPosition();
+            CheckHealth();
         }
     }
 
@@ -62,12 +65,14 @@ public class PlayerCharacterController : MonoBehaviour
         {
             isGrounded = true;
             animator.SetBool("Grounded", isGrounded);
+            AnimatorState = 0;
         }
 
         if (isGrounded && !pc2d.IsTouchingLayers(GroundLayer))
         {
             isGrounded = false;
             animator.SetBool("Grounded", isGrounded);
+            AnimatorState = 1;
         }
 
         float move = Input.GetAxis("Horizontal");
@@ -91,14 +96,21 @@ public class PlayerCharacterController : MonoBehaviour
         if (Input.GetKeyDown(Keys.JUMP) && isGrounded)
         {
             animator.SetTrigger("Jump");
+            AnimatorState = 2;
             isGrounded = false;
             animator.SetBool("Grounded", isGrounded);
             rb2d.velocity = new Vector2(rb2d.velocity.x, JumpForce);
         }
         else if (Mathf.Abs(move) > Mathf.Epsilon)
+        {
             animator.SetBool("Running", true);
+            AnimatorState = 3;
+        }
         else
+        {
             animator.SetBool("Running", false);
+            AnimatorState = 0;
+        }
     }
 
 
@@ -114,12 +126,12 @@ public class PlayerCharacterController : MonoBehaviour
             // Obviously we cannot kill the player if they are in a state where killing is disallowed.
             if (isKillable)
             {
+                isDead = true;
                 animator.SetTrigger("Death");
                 GameOverMenuController.GameOver();
             }
         }
     }
-
 
 
     /// <summary>
@@ -132,6 +144,17 @@ public class PlayerCharacterController : MonoBehaviour
         if (transform.position.y <= (Mathf.Abs(FallOffBoundary) * (-1)))
         {
             Die();
+        }
+    }
+
+
+
+    private void CheckHealth()
+    {
+        if (health > MIN_HEALTH)
+        {
+            isDead = false;
+            animator.SetTrigger("Recover");
         }
     }
 
@@ -184,9 +207,21 @@ public class PlayerCharacterController : MonoBehaviour
     public int ReturnHealth() { return health; }
 
 
+    public void DirectSetHealth(int setHealth) { health = setHealth; }
+
+
     /// <summary>
     /// Set if the player can be killed by damage objects in the scene.
     /// </summary>
     /// <param name="killable">Set to true if the player can be killed, false if not.</param>
     public void SetIsKillable(bool killable) { isKillable = killable; }
+
+
+    public int ReturnAnimatorState() { return AnimatorState; }
+
+
+    public void AnimatorSetBool(string var, bool b) { animator.SetBool(var, b); }
+
+
+    public void AnimatorSetTrigger(string var) { animator.SetTrigger(var); }
 }
