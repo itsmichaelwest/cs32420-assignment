@@ -70,6 +70,13 @@ public class TimeController : MonoBehaviour
                 thing.position = positions.Last();
                 positions.RemoveLast();
             }
+            else if (positions.Count() == 0)
+            {
+                if (thing.tag == "Rock")
+                {
+                    Destroy(thing.gameObject);
+                }
+            }
         }
     }
 

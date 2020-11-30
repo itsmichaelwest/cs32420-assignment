@@ -20,4 +20,9 @@ public class CollisionDamageManager : MonoBehaviour
             player.DecreaseHealth(100);
         }
     }
+
+    private void OnDestroy()
+    {
+        RockFallingController.DecreaseRockCount(1);
+    }
 }
