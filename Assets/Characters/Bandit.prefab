@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSmoothing: 0.05
-  JumpForce: 11
+  JumpForce: 9
   MoveForce: 7.5
   GroundLayer:
     serializedVersion: 2
