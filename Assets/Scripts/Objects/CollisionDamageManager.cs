@@ -2,6 +2,7 @@
 
 public class CollisionDamageManager : MonoBehaviour
 {
+    public int                          damage = 100;
     private PlayerCharacterController   player;
 
     void Start()
@@ -12,7 +13,7 @@ public class CollisionDamageManager : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
-            player.DecreaseHealth(100);
+            player.DecreaseHealth(damage);
     }
 
     private void OnDestroy()
