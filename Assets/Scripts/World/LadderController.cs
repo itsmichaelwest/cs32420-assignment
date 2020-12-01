@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class LadderController : MonoBehaviour
@@ -14,7 +12,6 @@ public class LadderController : MonoBehaviour
     /// Stop gravity impacting the player while they climb on the ladder,
     /// otherwise they'd just fall down as they tried to climb.
     /// </summary>
-    /// <param name="collider"></param>
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
@@ -29,7 +26,6 @@ public class LadderController : MonoBehaviour
     /// While the player is within the ladder's confines, we will allow them to
     /// climb up using vertical input.
     /// </summary>
-    /// <param name="collider"></param>
     void OnTriggerStay2D(Collider2D collision)
     {
         if (!(collision.tag == "Player")) return;
@@ -42,7 +38,6 @@ public class LadderController : MonoBehaviour
     /// <summary>
     /// Restores gravity to the player once they exit the ladder.
     /// </summary>
-    /// <param name="collider"></param>
     void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")

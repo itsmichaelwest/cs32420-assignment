@@ -8,7 +8,6 @@ public class PauseMenuController : MenuController
     private static Button       ResumeButton;
     private static Button       RestartButton;
 
-    // Start is called before the first frame update
     void Start()
     {
         MenuStatic = Menu;
@@ -18,8 +17,6 @@ public class PauseMenuController : MenuController
         RestartButton = transform.GetChild(2).GetComponent<Button>();
         RestartButton.onClick.AddListener(RestartLevel);
     }
-
-
 
     public static void Show()
     {

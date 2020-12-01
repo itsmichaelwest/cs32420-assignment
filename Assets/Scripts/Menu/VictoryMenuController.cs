@@ -4,13 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class VictoryMenuController : MenuController
 {
-    //public string               NextLevel;
     public GameObject           Menu;
     private static GameObject   MenuStatic;
     private static Button       NextLevelButton;
     private static Button       RestartButton;
 
-    // Start is called before the first frame update
     void Start()
     {
         MenuStatic = Menu;
@@ -27,7 +25,6 @@ public class VictoryMenuController : MenuController
         MenuStatic.SetActive(true);
         gameStarted = false;
     }
-
 
     public static void LoadNextLevel()
     {

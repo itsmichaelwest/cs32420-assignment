@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FollowManager : MonoBehaviour
 {
@@ -9,9 +7,5 @@ public class FollowManager : MonoBehaviour
     protected static PlayerCharacterController          player;
     protected static Vector2                            margin = new Vector2(1, 1);
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
-    }
+    void Start() { player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController; }
 }

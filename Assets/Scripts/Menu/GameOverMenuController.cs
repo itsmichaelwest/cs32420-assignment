@@ -7,7 +7,6 @@ public class GameOverMenuController : MenuController
     private static GameObject   MenuStatic;
     private static Button       RestartButton;
 
-    // Start is called before the first frame update
     void Start()
     {
         MenuStatic = Menu;
@@ -19,11 +18,9 @@ public class GameOverMenuController : MenuController
     void Update()
     {
         if (Input.GetKey(Keys.REVERSE))
-        {
             TimeController.buffersPaused = false;
             gameStarted = true;
             MenuStatic.SetActive(false);
-        }
     }
 
     public static void GameOver()

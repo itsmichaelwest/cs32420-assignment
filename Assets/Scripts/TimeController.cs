@@ -7,22 +7,22 @@ public class TimeController : MonoBehaviour
     protected Transform                 thing;
     public bool                         reversing = false;
     protected LinkedList<Vector3>       positions;
+    protected LinkedList<Quaternion>    rotations;
     protected const int                 MAXIMUM_REVERSE_SECS = 20;      // Maximum time allowed for reversal in seconds
     private MenuController              menu;
     private PlayerCharacterController   player;
 
-    // Will apply to player characters only
     private LinkedList<int>             health;
     private LinkedList<int>             animator;
     private LinkedList<bool>            isFacingRight;
 
     public static bool                  buffersPaused = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         thing = GetComponent<Transform>();
         positions = new LinkedList<Vector3>();
+        rotations = new LinkedList<Quaternion>();
         menu = FindObjectOfType(typeof(MenuController)) as MenuController;
         player = FindObjectOfType(typeof(PlayerCharacterController)) as PlayerCharacterController;
 
@@ -38,8 +38,7 @@ public class TimeController : MonoBehaviour
     {
         if (!buffersPaused)
         {
-            // If user is holding the rewind key, begin reversing time. Otherwise
-            // stop reversing time.
+            // If user is holding the rewind key, begin reversing time. Otherwise stop reversing time.
             if (Input.GetKey(Keys.REVERSE))
             {
                 reversing = true;
@@ -48,8 +47,7 @@ public class TimeController : MonoBehaviour
             }
             else
             {
-                // This is to prevent timeScale being set to 1 before the main menu
-                // is dismissed.
+                // This is to prevent timeScale being set to 1 before the main menu is dismissed.
                 if (menu.isGameStarted())
                 {
                     reversing = false;
@@ -58,8 +56,7 @@ public class TimeController : MonoBehaviour
                 }
             }
 
-            // Clear the list of positions once the rewind key is let go, as we only
-            // store one rewind session.
+            // Clear the list of positions once the rewind key is let go, as we only store one rewind session.
             if (Input.GetKeyUp(Keys.REVERSE))
             {
                 if (menu.isGameStarted())
@@ -72,6 +69,9 @@ public class TimeController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Adding and removing positions, rotation, and such is handled on each physics engine update.
+    /// </summary>
     void FixedUpdate()
     {
         if (thing.tag == "Player")
@@ -83,15 +83,20 @@ public class TimeController : MonoBehaviour
             if (positions.Count() >= (MAXIMUM_REVERSE_SECS * 60))
                 positions.RemoveFirst();
             positions.AddLast(thing.position);
+            if (rotations.Count() >= (MAXIMUM_REVERSE_SECS * 60))
+                rotations.RemoveFirst();
+            rotations.AddLast(thing.rotation);
         }
         else
         {
-            if (positions.Count() != 0)
+            if (positions.Count() != 0 && rotations.Count() != 0)
             {
                 thing.position = positions.Last();
                 positions.RemoveLast();
+                thing.rotation = rotations.Last();
+                rotations.RemoveLast();
             }
-            else if (positions.Count() == 0)
+            else if (positions.Count() == 0 && rotations.Count() == 0)
             {
                 if (thing.tag == "Rock")
                     Destroy(thing.gameObject);
@@ -99,6 +104,10 @@ public class TimeController : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Called if the player character is being reversed, this rewinds a few more additional parameters.
+    /// </summary>
     void PlayerUpdate()
     {
         if (!reversing)

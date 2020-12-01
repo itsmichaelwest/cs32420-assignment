@@ -1,7 +1,6 @@
 ﻿/// <summary>
 /// Used to store references to various keys used by the game and allow
-/// for quick global updates. Static class is used to prevent changes by
-/// other classes/methods.
+/// for quick global updates.
 /// </summary>
 public static class Keys
 {
