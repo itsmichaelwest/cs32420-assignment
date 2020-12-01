@@ -18,9 +18,11 @@ public class GameOverMenuController : MenuController
     void Update()
     {
         if (Input.GetKey(Keys.REVERSE))
+        {
             TimeController.buffersPaused = false;
             gameStarted = true;
             MenuStatic.SetActive(false);
+        }
     }
 
     public static void GameOver()
